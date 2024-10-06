@@ -1,0 +1,150 @@
+﻿@page
+@model ExoplanetSearch.Pages.IndexModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExoplanetSearch</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            font-size: 62.5%;
+        }
+
+        body {
+            background-color: #1A1A2D;
+        }
+
+        .navbar {
+            margin: 2rem 4rem 0;
+            height: 8rem;
+            display: flex;
+            flex-direction: row;
+            color: white;
+            align-items: center;
+        }
+
+            .navbar p {
+                font-size: 4rem;
+            }
+
+            .navbar input {
+                margin-left: 27.5rem;
+                height: 3rem;
+                width: 40rem;
+                background-color: white;
+                border-radius: 1rem;
+                border: none;
+            }
+
+                .navbar input::placeholder {
+                    padding: .5rem;
+                    color: black;
+                    opacity: 0.5;
+                }
+
+        form {
+            margin: 4rem 8rem 0;
+            display: flex;
+            flex-direction: column;
+            border: none;
+            background-color: #0077b6;
+            padding: 20rem 8rem;
+            border-radius: 1rem;
+            align-items: center;
+        }
+
+        label {
+            font-size: 7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            margin-bottom: 6rem;
+        }
+
+        .select {
+            border: none;
+            width: 52rem;
+            height: 4rem;
+            border-radius: .5rem;
+        }
+
+        /* Custom style for the results dropdown */
+        .search-results {
+            list-style-type: none;
+            background-color: white;
+            width: 40rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            color: black;
+            padding: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+            .search-results li {
+                padding: 1rem;
+                cursor: pointer;
+                border-bottom: 1px solid #ccc;
+            }
+
+                .search-results li:hover {
+                    background-color: #ddd;
+                }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <p>ExoplanetSearch</p>
+            <input type="search" id="planetSearch" placeholder="Type planet name" oninput="searchPlanet(this.value)" />
+            <ul id="searchResults" class="search-results"></ul>
+        </div>
+    </nav>
+    <div class="menu">
+        <form method="get" action="/PlanetInfo">
+            <label for="planetSelect">
+                Select a exoplanet:
+            </label>
+            <select class="select" name="planetName" id="planetSelect" onchange="this.form.submit()">
+                <option value="" disabled selected>Select a planet...</option>
+                @foreach (var planet in Model.Planets)
+                {
+                    <option value="@planet.Name">@planet.Name</option>
+                }
+            </select>
+        </form>
+    </div>
+
+    <script>
+        function searchPlanet(query) {
+            // Limpar resultados se o input estiver vazio
+            if (query === "") {
+                document.getElementById("searchResults").innerHTML = "";
+                return;
+            }
+
+            // Faz a requisição AJAX para buscar planetas
+            fetch(`/SearchPlanet?query=${query}`)
+                .then(response => response.json())  // Espera a resposta como JSON
+                .then(data => {
+                    const resultsList = document.getElementById("searchResults");
+                    resultsList.innerHTML = "";  // Limpa os resultados anteriores
+                    data.forEach(planet => {
+                        const li = document.createElement("li");
+                        li.textContent = planet.name;  // Assume que o JSON retorna { name: '...' }
+                        li.onclick = () => window.location.href = `/PlanetInfo?planetName=${planet.name}`;  // Redireciona ao clicar
+                        resultsList.appendChild(li);
+                    });
+                })
+                .catch(error => console.log("Error:", error));
+        }
+    </script>
+</body>
+</html>

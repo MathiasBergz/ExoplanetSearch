@@ -1,0 +1,100 @@
+﻿@page
+@model ExoplanetSearch.Pages.PlanetInfoModel
+@{
+    ViewData["Title"] = "Planet Details";
+}
+
+<link rel="stylesheet" href="~/css/PlanetStyle.css" />
+<div class="sun-background"></div>
+<div class="moon-background"></div>
+
+<div class="list">
+    <div class="information">
+        <!-- Exibe as informações estáticas do planeta -->
+        @if (Model.SelectedPlanet != null)
+        {
+            <h2>Information of the selected planet:</h2>
+            <p><strong>Name:</strong> @Model.SelectedPlanet.Name</p>
+            <p><strong>Number of Stars:</strong> @Model.SelectedPlanet.NumStars</p>
+            <p><strong>PS:</strong> @Model.SelectedPlanet.PS</p>
+            <p><strong>RP:</strong> @Model.SelectedPlanet.RP</p>
+            <p><strong>R:</strong> @Model.SelectedPlanet.R</p>
+            <p><strong>ES:</strong> @Model.SelectedPlanet.ES</p>
+        }
+
+        <!-- Div para os dados calculados, que será atualizada via Ajax -->
+        <div id="calculatedData">
+            @await Html.PartialAsync("Shared/_CalculatedData", Model)
+        </div>
+    </div>
+</div>
+
+<div class="range">
+    <label>Telescope diameter</label>
+    <input type="range" id="TelescopeDiameter" min="5" max="15" value="6" name="TelescopeDiameter" oninput="updateDiameter(this.value)" />
+    <span id="sliderValue">6</span>
+</div>
+
+<div class="data">
+    <label>Equations</label>
+    <table>
+        <tr>
+            <td>SNR = SNR0 [(R* RP (D/6)) / ((ES/10) PS)]2</td>
+        </tr>
+        <tr>
+            <td>ESmax = 15 (D/6) / PS</td>
+        </tr>
+    </table>
+    <label>Glosary</label>
+
+    <table>
+        <tr>
+            <td>SNR: Signal-to-noise ratio</td>
+            <td>R*: Stellar-radius</td>
+            <td>RP: planetary radius</td>
+        </tr>
+        <tr>
+            <td>ES: distance to the planetary system</td>
+            <td>D: diameter of the telescope</td>
+            <td>PS: planet-star distance </td>
+        </tr>
+        <tr>
+            <td>ESmax: Limiting distance to separate the exoplanet from its host star</td>
+            <td>SNR0 = 100</td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    // Seleciona o input do slider
+    var slider = document.querySelector("input[name='TelescopeDiameter']");
+    
+    // Seleciona o elemento que vai mostrar o valor do slider
+    var sliderValue = document.getElementById("sliderValue");
+
+    // Função para atualizar o valor do slider e fazer a requisição Ajax
+    slider.addEventListener('input', function() {
+        var diameter = slider.value; // Obtém o valor do slider
+        sliderValue.textContent = diameter; // Atualiza o valor no HTML
+
+        // Chama a função Ajax para atualizar os cálculos
+        updateCalculations(diameter);
+    });
+
+    function updateCalculations(diameter) {
+        var planetName = "@Model.SelectedPlanet.Name"; // Nome do planeta atual
+
+        // Faz a requisição Ajax
+        fetch(`/PlanetInfo?planetName=${planetName}&diameter=${diameter}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest' // Cabeçalho para identificar que é uma requisição Ajax
+            }
+        })
+        .then(response => response.text()) // Converte a resposta para texto (HTML)
+        .then(html => {
+            // Substitui o conteúdo da div com o ID "calculatedData" pelo novo HTML retornado
+            document.getElementById("calculatedData").innerHTML = html;
+        })
+        .catch(error => console.log('Erro:', error));
+    }
+</script>

@@ -1,0 +1,159 @@
+﻿@keyframes moonRotation {
+    0% {
+        background-position: 0% 0%;
+        border: 0px solid #00000000;
+    }
+
+    25% {
+        background-position: 150% 0%;
+        border: 0px solid #00000000;
+    }
+
+    50% {
+        background-position: 300% 0%;
+        border: 0px solid #00000000;
+    }
+
+    75% {
+        background-position: 450% 0%;
+        border: 0px solid #00000000;
+    }
+
+    100% {
+        background-position: 600% 0%;
+        border: 0px solid #00000000;
+    }
+}
+
+.moon-background {
+    top: 6.1rem;
+    left: 3.5rem;
+    display: block;
+    width: 10rem;
+    height: 10rem;
+    position: absolute;
+    border-radius: 50%;
+    background-image: url(../deimos.jpg);
+    background-repeat: repeat-x;
+    background-size: 110% 100%;
+    opacity: 1;
+    animation-name: moonRotation;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards !important;
+    box-shadow: inset -10px 8px 6px -5px #ffffff, inset 20px -20px 40px 30px rgba(0, 0, 0, 0.9), 7px -6px 14px rgba(255, 255, 255, 0.3215686275);
+}
+
+
+.sun-background {
+    top: 3.5rem;
+    left: 20rem;
+    display: block;
+    width: 15rem;
+    height: 15rem;
+    position: absolute;
+    border-radius: 50%;
+    background-image: url(../sun.jpg);
+    background-repeat: repeat-x;
+    background-size: 110% 100%;
+    opacity: 1;
+    animation-name: moonRotation;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards !important;
+    box-shadow: inset -10px 8px 6px -5px #ffffff, inset 20px -20px 40px 30px rgb(255, 0, 0, 0.7), 0 0 20px rgba(255, 106, 0, 0.5), 0 0 40px rgba(255, 106, 0, 0.3);
+}
+
+body {
+    background-color: #1A1A2D;
+}
+
+.data {
+    margin: 1rem 0 1rem 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.data label {
+    font-size: 2rem;
+}
+
+.data table {
+    width: 25rem; 
+    border-collapse: collapse; 
+    margin: .5rem 0;
+}
+
+.data table:last-child {
+    width: 75rem;
+    margin-bottom: 0;
+}
+
+.data table:last-child td {
+    width: 28rem;
+}
+
+.data td {
+    padding: .5rem;
+    border: 3px solid #ffffff;
+    text-align: left;
+    vertical-align: middle;
+    color: white;
+}
+
+.data table:last-child tr:last-child td:first-child {
+    width: 36rem;
+}
+
+.list {
+    margin: 4rem 2rem 5rem 60rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
+    width: 24rem;
+    background-color: black;
+    border-radius: .5rem;
+    padding: .8rem;
+}
+
+.information {
+    width: 100%;
+}
+
+.information p:first-child {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.information h2 {
+    margin: 0;
+}
+
+.information p {
+    margin: .5rem 0;
+}
+
+.range {
+    margin: 0 30rem -8rem;
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    color: white;
+    text-align: center;
+}
+
+.range label {
+    font-size: 2rem;
+}
+
+.range input {
+    margin: .5rem 0;
+}
+
+.range span {
+    font-size: 1rem;
+}

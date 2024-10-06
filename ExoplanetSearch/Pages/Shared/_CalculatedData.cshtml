@@ -1,0 +1,23 @@
+﻿@model ExoplanetSearch.Pages.PlanetInfoModel
+
+<div id="calculatedData">
+    <h2>Calculated Data:</h2>
+    <p>
+        <strong>Status:</strong>
+        @if (Model.StatusMessage == "Characterized")
+        {
+            <span class="Charactable" style="color: green">Characterized</span>
+        }
+        else if (Model.StatusMessage == "Not Characterized")
+        {
+            <span class="NotCharactable" style="color: red">Not Characterized</span>
+        }
+        else
+        {
+            <span class="NotPossibleCalculate" style="color: yellow">Not Possible to Calculate SNR or ESmax</span>
+        }
+    </p>
+    <p><strong>SNR:</strong> @Model.SNRResult</p>
+    <p><strong>ESmax:</strong> @Model.ESmaxResult</p>
+</div>
+
